@@ -1,11 +1,11 @@
 import './App.css';
+import LinkContainer from './Containers/LinkContainer/LinkContainer.tsx';
 
 const App = () => {
-
   return (
-    <>
-     I'm starting my home work #81! ^_^
-    </>
+   <>
+     <LinkContainer/>
+   </>
   );
 };
 
