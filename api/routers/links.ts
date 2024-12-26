@@ -35,7 +35,13 @@ linkRouter.post('/links',  async (req, res, next) => {
         return;
     }
 
-    const shortURL = nanoid(7);
+    let shortURL = nanoid(7);
+    let sameShortLink = await Link.findOne({shortURL});
+
+    while (sameShortLink) {
+        shortURL = nanoid(7);
+        sameShortLink = await Link.findOne({ shortURL });
+    }
 
     const newLink: ILink = {
         originalURL: req.body.originalURL,
