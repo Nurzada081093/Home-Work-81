@@ -6,7 +6,9 @@ import * as React from 'react';
 import { useState } from 'react';
 import { ILinkForm } from '../../types';
 import { toast } from 'react-toastify';
-import { Typography } from '@mui/material';
+import { Typography, CircularProgress } from '@mui/material';
+import { useAppSelector } from '../../app/hooks.ts';
+import { addLinkSlice } from '../../store/linksSlice.ts';
 
 interface Props {
   addLink: (link: ILinkForm) => void;
@@ -18,6 +20,7 @@ const initialLink = {
 
 const FormElement:React.FC<Props> = ({addLink}) => {
   const [newLink, setNewLink] = useState<ILinkForm>(initialLink);
+  const addLoading = useAppSelector(addLinkSlice);
 
   const getNewLink = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNewLink((prevState) => {
@@ -35,7 +38,6 @@ const FormElement:React.FC<Props> = ({addLink}) => {
       toast.error('Fill in the link!');
     } else {
       addLink({...newLink});
-      setNewLink(initialLink);
     }
   };
 
@@ -61,19 +63,11 @@ const FormElement:React.FC<Props> = ({addLink}) => {
             placeholder="Enter URL here..."
             style={{height:'50px'}}
           />
-          {/*<Textarea*/}
-          {/*  value={newComment.description}*/}
-          {/*  id="description"*/}
-          {/*  name="description"*/}
-          {/*  onChange={getNewComment}*/}
-          {/*  placeholder="Enter your message..."*/}
-          {/*  minRows={3}*/}
-          {/*/>*/}
           <Button type="submit"
-                  // disabled={loaderPost}
+                  disabled={addLoading}
           >
             Shorten!
-            {/*{loaderPost ? <CircularProgress size="30px" sx={{marginLeft: '20px'}}/> : null}*/}
+            {addLoading ? <CircularProgress size="30px" sx={{marginLeft: '20px'}}/> : null}
           </Button>
         </Stack>
       </form>
