@@ -11,11 +11,11 @@ import { useAppSelector } from '../../app/hooks.ts';
 import { addLinkSlice } from '../../store/linksSlice.ts';
 
 interface Props {
-  addLink: (link: ILinkForm) => void;
+  addLink: (originalURL: ILinkForm) => void;
 }
 
 const initialLink = {
-  link: ''
+  originalURL: ''
 };
 
 const FormElement:React.FC<Props> = ({addLink}) => {
@@ -34,13 +34,12 @@ const FormElement:React.FC<Props> = ({addLink}) => {
   const createNewLink = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (newLink.link.trim().length === 0) {
+    if (newLink.originalURL.trim().length === 0) {
       toast.error('Fill in the link!');
     } else {
       addLink({...newLink});
     }
   };
-
 
   return (
     <Box
@@ -48,7 +47,7 @@ const FormElement:React.FC<Props> = ({addLink}) => {
         borderRadius: 10,
         p: "30px",
         backgroundColor: "rgba(157,165,163,0.68)",
-        margin: '15%'
+        margin: '5%'
       }}
     >
       <Typography variant="h2" sx={{marginBottom: '15px', textAlign: 'center', color: 'white', fontWeight: 'bold', fontStyle: 'italic'}}>Shorten your link!</Typography>
@@ -56,9 +55,9 @@ const FormElement:React.FC<Props> = ({addLink}) => {
         <Stack spacing={2}>
           <Input
             type="text"
-            value={newLink.link}
-            id="link"
-            name="link"
+            value={newLink.originalURL}
+            id="originalURL"
+            name="originalURL"
             onChange={getNewLink}
             placeholder="Enter URL here..."
             style={{height:'50px'}}

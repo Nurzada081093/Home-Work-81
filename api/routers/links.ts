@@ -27,7 +27,7 @@ linkRouter.get('/:shortURL', async (req, res, next) => {
     }
 });
 
-linkRouter.post('/',  async (req, res, next) => {
+linkRouter.post('/links',  async (req, res, next) => {
     const originalURL = req.body.originalURL;
 
     if (!originalURL) {
@@ -35,13 +35,15 @@ linkRouter.post('/',  async (req, res, next) => {
         return;
     }
 
+    const shortURL = nanoid(7);
+
     const newLink: ILink = {
-        originalURL
+        originalURL: req.body.originalURL,
+        shortURL: shortURL,
     };
 
     try {
-        const shortURL = nanoid(7);
-        const link = new Link({...newLink, shortURL});
+        const link = new Link(newLink);
         await link.save();
         res.send(link);
     } catch (e) {

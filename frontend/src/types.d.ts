@@ -1,5 +1,5 @@
 export interface ILinkForm {
-  link: string;
+  originalURL: string;
 }
 
 export interface ILink {

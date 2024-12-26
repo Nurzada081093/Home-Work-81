@@ -1,10 +1,13 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axiosRequest from '../axiosRequest.ts';
-import { ILinkForm } from '../types';
+import { ILink, ILinkForm } from '../types';
 
-export const addLink = createAsyncThunk<void, ILinkForm>(
+
+export const addLink = createAsyncThunk<ILink, ILinkForm>(
   'links/addLink',
   async (link) => {
-    await axiosRequest.post(`links`, {...link});
+    const postURL = await axiosRequest.post('/links', {...link});
+    return postURL.data;
   }
 );
+

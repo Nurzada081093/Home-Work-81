@@ -5,23 +5,18 @@ import { RootState } from '../app/store.ts';
 
 interface LinkStale {
   link: ILink | null;
-  loadings: {
-    addLink: boolean;
-    getLinks: boolean;
-  },
+  loading: boolean;
   error: boolean;
 }
 
 const initialState: LinkStale = {
   link: null,
-  loadings: {
-    addLink: false,
-    getLinks: false,
-  },
+  loading: false,
   error: false,
 }
 
-export const addLinkSlice = (state: RootState) => state.links.loadings.addLink;
+export const getOneLinkSlice = (state: RootState) => state.links.link;
+export const addLinkSlice = (state: RootState) => state.links.loading;
 
 const linksSlice = createSlice({
   name: 'links',
@@ -30,15 +25,17 @@ const linksSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(addLink.pending, (state) => {
-        state.loadings.addLink = true;
+        state.loading = true;
         state.error = false;
       })
-      .addCase(addLink.fulfilled, (state) => {
-        state.loadings.addLink = false;
+      .addCase(addLink.fulfilled, (state, {payload: link}) => {
+        state.link = null;
+        state.loading = false;
         state.error = false;
+        state.link = link;
       })
       .addCase(addLink.rejected, (state) => {
-      state.loadings.addLink = false;
+      state.loading = false;
       state.error = true;
     });
   },
